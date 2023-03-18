@@ -99,3 +99,63 @@
 - Dataflow operations
   - ![image](https://user-images.githubusercontent.com/47103479/220353839-d9578579-a5fe-4f78-aa9a-863553abfbb3.png)
   - GroupByKey는 빅 데이터의 리소스를 사용할 수 있습니다. 이것이 샘플 데이터에서 파이프라인을 몇 번 테스트하여 프로덕션 규모로 실행하기 전에 확장 방법을 알고 있는지 확인하십시오
+
+
+## BigQuery and Dataflow solutions
+- BigQuery
+  - ![image](https://user-images.githubusercontent.com/47103479/220365209-ecae27e3-a777-4768-8d92-c654327be117.png)
+  - BigQuery는 분석을 수행하는 프런트 엔드 서비스와 스토리지를 수행하는 백엔드 서비스의 두 가지 서비스입니다. 
+  - 방대한 데이터 세트에 대한 거의 실시간 분석을 제공합니다. 데이터 스토리지는 내구성이 있고 저렴하며,다양한 데이터 세트를 연결하고 작업하여 새로운 통찰력과 비즈니스 가치를 도출할 수 있습니다. BigQuery는 쿼리에 SQL을 사용하므로 많은 데이터 분석가가 즉시 사용할 수 있습니다.
+  - BigQuery는 유연한 수집을 위해 많은 서비스에 연결합니다. 효율성을 위한 중첩 및 반복 필드와 확장성을 위한 사용자 정의 함수를 지원합니다.
+  - 스토리지 및 데이터베이스에서 별도의 컴퓨팅 및 처리를 통해 서버리스 운영이 가능합니다.
+- BigQuery solutions
+  - ![image](https://user-images.githubusercontent.com/47103479/220365572-26437397-6ec7-4b36-abf1-0b0322ff8c29.png)
+  - BigQuery에는 콘솔과 BQ의 명령줄에서 사용할 수 있는 자체 분석 SQL 쿼리 프런트 엔드가 있습니다. 그것은 단지 쿼리 엔진입니다. 
+  - BigQuery의 백엔드 데이터 웨어하우스 부분 테이블에 데이터를 저장합니다.
+  - BigQuery에는 클라우드 스토리지에 대한 커넥터도 있습니다. 이것은 일반적으로 CSV 파일로 직접 작업하는 데 사용됩니다. BigQuery에는 Cloud Bigtable에 대한 커넥터도 있습니다
+  - 데이터를 처리할 로컬에 저장하는 것보다 거의 빠르고 경우에 따라 더 빠를 수 있습니다. 즉, 네트워크는 Hadoop과 HDFS의 개념을 거꾸로 뒤집습니다. 처리 리소스와 별도로 데이터를 저장하는 것이 다시 한 번 더 효율적입니다
+  - ![image](https://user-images.githubusercontent.com/47103479/220366278-1b361f45-5b59-4d85-afeb-89edf50f4a4a.png)
+    - Cloud Dataproc 및 Cloud Data Flow에서 클라우드 스토리지에서 별도의 파일을 CSV 파일로 출력할 수 있습니다. 즉, 데이터를 병렬로 처리하고 결과를 별도의 작은 파일에 기록하는 분산된 노드 또는 서버 세트를 가질 수 있습니다.이것은 나중에 조합하기 위해 분산된 결과를 축적하는 쉬운 방법입니다. 
+    - 모든 데이터 처리 서비스에서 모든 스토리지 서비스에 액세스합니다. Cloud Data Flow는 BigQuery를 위한 탁월한 ETL 솔루션입니다.
+
+## Design data processing infrastructure
+- Data ingest solutions: CLI, web UI, or API
+  - ![image](https://user-images.githubusercontent.com/47103479/220366598-adece2b5-9e10-4197-8ddd-d478d4500616.png)
+  - gsutil 명령줄 도구를 사용하여 Cloud Storage에 파일을 로드할 수 있습니다.
+  - BigQuery 명령줄 도구인 bq는 대용량 데이터 파일을 업로드하는 데 적합합니다. 데이터 파일 업로드 예약을 위해. 명령을 사용하여 테이블을 만들고, 스키마를 찾고, 데이터를 로드하고, 쿼리를 실행할 수 있습니다. bq 명령어는 Compute Engine 인스턴스에서 사용할 수 있습니다.
+  - Cloud Shell에 설치하거나 Google Cloud 소프트웨어 개발 키트(SDK)의 일부로 모든 클라이언트 시스템에 설치할 수 있습니다. GCP 콘솔에서 BigQuery로 데이터를 로드할 수 있습니다.
+- Three ways of loading data into BigQuery 
+  - ![image](https://user-images.githubusercontent.com/47103479/220366923-62a55d88-c690-4bff-8cfd-463657ba5d34.png)
+  - Cloud Dataflow 및 Cloud Logging에서 데이터를 스트리밍하거나 프로그램에서 사후 호출을 사용할 수 있습니다. 그리고 BigQuery가 CSV 및 JSON 형식 파일을 자동으로 감지할 수 있어 매우 편리합니다
+- Options for trnasferring storage
+  - ![image](https://user-images.githubusercontent.com/47103479/220367178-d65d37cf-31b0-4e00-8db1-592e19277f43.png)
+  - 데이터를 수집하기 위해. 간단히 말해서 파일 업로드에는 gsutil을 사용하고, 데이터가 다른 클라우드와 같은 다른 위치에 있을 때는 스토리지 전송 서비스를 사용하고, 데이터가 너무 많을 때는 Transfer Appliance를 사용합니다.
+
+## Pub/Sub solutions 
+- Pub/Sub
+  - ![image](https://user-images.githubusercontent.com/47103479/220369849-51fe25ee-cac5-4929-bf62-65f921cc87f3.png)
+  - Cloud Pub/Sub 메시지 브로커는 완전한 수집 솔루션을 지원합니다. 시스템 간의 느슨한 결합과 시스템 간의 수명이 긴 연결을 제공합니다.
+  - Cloud Pub/Sub가 메시지를 보유하는 기간은 최대 7일입니다.
+- common appliactions of Pub/Sub
+  - ![image](https://user-images.githubusercontent.com/47103479/220370100-8b83fae9-ebcc-4232-b42e-2a3df2f942dc.png)
+  - Cloud Pub/Sub는 메시징 인프라를 통해 애플리케이션과 서비스를 연결합니다.
+  - Pub/Sub는 동기식 지점 간 연결을 단일 고가용성 비동기식 버스로 대체하여 이벤트 배포를 간소화합니다.
+  - Pub/Sub를 사용하면 트래픽 급증에 대한 과잉 프로비저닝을 방지할 수 있습니다.
+  - 클라우드 데이터 흐름과 함께 Cloud Pub/Sub를 사용하면 정확히 한 번에 순서대로 처리할 수 있습니다.
+  - Cloud Pub/Sub는 정확히 한 번 전송을 처리합니다.
+  - 클라우드 데이터 흐름은 중복 제거, 순서 지정 및 기간 설정을 처리합니다
+  - 업무 분리는 경쟁 메시징 시스템의 병목 현상을 능가하는 확장 가능한 솔루션을 가능하게 합니다.
+- Serverless analytics solution
+  - ![image](https://user-images.githubusercontent.com/47103479/220370364-1ff2421b-23b4-4655-ac92-3c462dfcb128.png)
+  - 데이터 수집을 위한 Cloud Pub/Sub, 데이터 처리 및 ETL을 위한 클라우드 데이터 흐름, 대화형 분석을 위한 BigQuery.
+- Data analytics solution
+  - ![image](https://user-images.githubusercontent.com/47103479/220370550-146ed99d-2f1a-4ed6-8927-22dfc7f637e1.png)
+
+## Practice exam
+- ![image](https://user-images.githubusercontent.com/47103479/220370773-d215814b-5a3c-44b8-ad73-8c303f02919a.png)
+  - 정답은 B입니다. BigQuery를 사용하세요. 
+  - 스토리지 솔루션용 및 처리 솔루션용 Cloud Dataproc. 질문에 Apache Spark 코드를 재사용할 계획이 필요하기 때문에 Cloud Dataproc이 맞습니다. CSV 파일은 클라우드 저장소에 있을 수 있습니다.
+- ![image](https://user-images.githubusercontent.com/47103479/220371126-851a904d-f934-4fde-9697-00394494f527.png)
+  - 답은 A, 입력용 클라우드 Pub/Sub이고 게시자에서 타임스탬프를 첨부합니다.
+  - Apache Kafka를 설정하고 유지 관리해야 하므로 이 시나리오에서 Apache Kafka가 권장되는 솔루션이 아니라는 것을 알 수 있습니다
+  - 솔루션의 나머지 부분을 구현하려면 타임스탬프가 필요하므로 게시자에서 수집 시 타임스탬프를 적용하는 것이 좋습니다.
